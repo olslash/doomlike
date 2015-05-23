@@ -1,0 +1,10 @@
+{
+	"rules": {
+		"quotes": [1, "single"]
+	},
+
+	"env": {
+		"es6": true,
+		"node": true
+	}
+}
