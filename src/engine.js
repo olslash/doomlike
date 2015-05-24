@@ -1,5 +1,4 @@
 /* @flow */
-
 'use strict';
 
 var _ = require('lodash');
@@ -68,6 +67,7 @@ class System {
 
   tick() {
     // fixme: cache this and just update when new relevant components are added
+    // should also maybe not touch irrelevant components.
     var relevantEntities = _(_entities)
 
       .keys()
