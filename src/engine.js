@@ -87,10 +87,9 @@ class System {
       .value();
 
 
-    return this.onTick(relevantEntities);
+    this.onTick(relevantEntities);
   }
 }
-
 
 module.exports = {
   Entity,
