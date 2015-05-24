@@ -12,7 +12,6 @@ var keymap = {
   'a': 'left',
   'd': 'right'
 };
-
 var activeKeys = {};
 
 module.exports = new System('controllable', ['position'], function(entities) {
@@ -33,14 +32,13 @@ module.exports = new System('controllable', ['position'], function(entities) {
       entity.position.x++;
     }
   });
+  activeKeys = {};
 });
 
 keypress(process.stdin);
 process.stdin.setRawMode(true)
 
 process.stdin.on('keypress', function (ch, key) {
-  activeKeys = {};
-
   if(key && key.name in keymap) {
     var action = keymap[key.name]
     activeKeys[action] = true;
