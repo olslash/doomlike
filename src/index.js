@@ -8,6 +8,7 @@ var engine = require('./engine');
 var Entity = engine.Entity;
 var components = require('./components');
 var renderSystem = require('./systems/render');
+var controllableSystem = require('./systems/controllable');
 
 charm.pipe(process.stdout);
 charm.reset();
@@ -27,14 +28,16 @@ var visible = components.Visible.getInstance({
 
 engine.attachComponentToEntity(enemyPosition, someEnemy);
 engine.attachComponentToEntity(visible, someEnemy);
-
+engine.attachComponentToEntity(components.Controllable.getInstance(), someEnemy);
 
 
 var fps = 0;
 // clear()
 function gameLoop() {
-  fps ++
+  fps ++;
+  // todo: bookkeeping of systems-- automatically tick all of them
   renderSystem.tick();
+  controllableSystem.tick();
   setImmediate(gameLoop);
 }
 

@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "charm": "^1.0.0",
+    "keypress": "^0.2.1",
     "lodash": "^3.9.1"
   },
   "devDependencies": {

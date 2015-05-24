@@ -28,6 +28,24 @@ module.exports = new System('render', ['visible', 'position'], function(entities
 
   // write changes
   _.each(entities, function(entity) {
+    // clamp entity to bounds
+    if(entity.position.x >= gridSize) {
+        entity.position.x = gridSize - 1;
+    }
+    if(entity.position.x < 0) {
+        entity.position.x = 0;
+    }
+
+    if(entity.position.y >= gridSize) {
+        entity.position.y = gridSize - 1;
+    }
+    if(entity.position.y < 0) {
+        entity.position.y = 0;
+    }
+
+
+
+
     grid[entity.position.y][entity.position.x] = {
       foreground: entity.visible.foreground,
       character: entity.visible.character
