@@ -46,7 +46,7 @@ module.exports = new System('render', ['visible', 'position'], function(entities
 
 
 
-    grid[entity.position.y][entity.position.x] = {
+    grid[Math.floor(entity.position.y)][Math.floor(entity.position.x)] = {
       foreground: entity.visible.foreground,
       character: entity.visible.character
     };
@@ -55,7 +55,8 @@ module.exports = new System('render', ['visible', 'position'], function(entities
   // write to screen
   _.each(grid, function(row, y) {
     _.each(row, function(pixel: Pixel, x) {
-      charm.position(x + 1, y + 1); // charm needs to be 1-indexed
+      // +1 because charm needs to be 1-indexed
+      charm.position(Math.floor(x + 1), Math.floor(y + 1));
       charm.foreground(pixel.foreground);
       charm.write(pixel.character);
     });

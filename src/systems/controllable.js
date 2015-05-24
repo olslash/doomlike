@@ -6,6 +6,9 @@ var keypress = require('keypress');
 
 var System = require('../engine').System;
 
+
+var MOVE_SPEED = 10;
+
 var keymap = {
   'w': 'forward',
   's': 'back',
@@ -23,21 +26,23 @@ var precludeKeys = {
 var activeKeys = {};
 
 module.exports = new System('controllable', ['position'], function(entities) {
+  var moveDist = MOVE_SPEED / 100;
+
   _.each(entities, function(entity) {
     if(activeKeys.forward) {
-      entity.position.y--;
+      entity.position.y -= moveDist;
     }
 
     if(activeKeys.back) {
-      entity.position.y++;
+      entity.position.y += moveDist;
     }
 
     if(activeKeys.left) {
-      entity.position.x--;
+      entity.position.x -= moveDist;
     }
 
     if(activeKeys.right) {
-      entity.position.x++;
+      entity.position.x += moveDist;
     }
   });
 
