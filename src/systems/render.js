@@ -14,7 +14,7 @@ module.exports = new System('render', ['visible', 'position'], function(entities
 
   type Grid = Array< Array<Pixel> >;
 
-  var gridSize = 5;
+  var gridSize = 25;
 
   var bgPixel: Pixel = {
     foreground: 'green',
