@@ -23,50 +23,66 @@ var enemyPosition = PositionComponent.getInstance({
 
 var visibleComponent = new Component('visible', ['character']);
 var visible = visibleComponent.getInstance({
-  character: 'O'
+  character: 'O',
+  foreground: 'red'
 });
 
 
 engine.attachComponentToEntity(enemyPosition, someEnemy);
 engine.attachComponentToEntity(visible, someEnemy);
 
+
 var renderSystem = new System('render', ['visible', 'position'], function(entities) {
-  charm.position(0,0);
-  charm.foreground('green');
+  type Pixel = {
+    foreground: string;
+    character : string;
+  }
 
-  var grid = [
-    '.....',
-    '.....',
-    '.....',
-    '.....',
-    '.....'
-  ];
+  type Grid = Array< Array<Pixel> >;
 
-  _.each(grid, function(row, i) {
-    charm.position(0, i);
-    charm.write(row)
+  var gridSize = 5;
+
+  var bgPixel: Pixel = {
+    foreground: 'green',
+    character: '.'
+  }
+
+  // build grid backbround
+  var grid: Grid = _.map(new Array(gridSize), function() {
+    return _.fill(Array(gridSize), bgPixel);
   });
 
+  // write changes
   _.each(entities, function(entity) {
-    charm.position(entity.position.y, entity.position.x);
-    charm.foreground('red');
-    charm.write(entity.visible.character);
+    grid[entity.position.y][entity.position.x] = {
+      foreground: entity.visible.foreground,
+      character: entity.visible.character
+    };
+  });
+
+  // write to screen
+  _.each(grid, function(row, y) {
+    _.each(row, function(pixel: Pixel, x) {
+      charm.position(x + 1, y + 1); // charm needs to be 1-indexed
+      charm.foreground(pixel.foreground);
+      charm.write(pixel.character);
+    });
   });
 });
 
-// var fps = 0;
+var fps = 0;
 // clear()
 function gameLoop() {
-  // fps ++
+  fps ++
   renderSystem.tick();
   setImmediate(gameLoop);
 }
 //
 //
-// setInterval(function() {
-//   clear();
-//   console.log('fps:', fps);
-//   fps = 0;
-// }, 1000)
+setInterval(function() {
+  charm.position(0, 10)
+  charm.write('fps: ' + fps)
+  fps = 0;
+}, 1000)
 
 gameLoop()
