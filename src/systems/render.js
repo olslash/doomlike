@@ -6,22 +6,21 @@ var charm = require('charm')();
 
 var System = require('../engine').System;
 
+type Pixel = {
+  foreground: string;
+  character : string;
+}
+
+type Grid = Array< Array<Pixel> >;
+
+var gridSize = 25;
+var bgPixel: Pixel = {
+  foreground: 'green',
+  character: '.'
+}
+
 module.exports = new System('render', ['visible', 'position'], function(entities) {
-  type Pixel = {
-    foreground: string;
-    character : string;
-  }
-
-  type Grid = Array< Array<Pixel> >;
-
-  var gridSize = 25;
-
-  var bgPixel: Pixel = {
-    foreground: 'green',
-    character: '.'
-  }
-
-  // build grid backbround
+  // build grid background
   var grid: Grid = _.map(new Array(gridSize), function() {
     return _.fill(Array(gridSize), bgPixel);
   });
@@ -42,9 +41,6 @@ module.exports = new System('render', ['visible', 'position'], function(entities
     if(entity.position.y < 0) {
         entity.position.y = 0;
     }
-
-
-
 
     grid[Math.floor(entity.position.y)][Math.floor(entity.position.x)] = {
       foreground: entity.visible.foreground,
