@@ -24,7 +24,7 @@ class Component {
   type  : string;
   fields: ?Array<Field>;
 
-  constructor(type: string, fields: ?Array<Field>) {
+  constructor(type: string, fields: ?Array<Field> = []) {
     this.type = type;
     this.fields = fields;
   }
@@ -35,7 +35,7 @@ class Component {
     // TODO: validate fields
     var instance = {};
 
-    var reset = Component.makeResetFunction(instance, this.fields);
+    var reset = Component.makeResetFunction(instance, this.fields, options);
     reset();
 
     instance.type = this.type;
@@ -45,7 +45,8 @@ class Component {
     return instance;
   }
 
-  static makeResetFunction(instance: Object, fields: ?Array<Field> = []): () => void {
+  static makeResetFunction(instance: Object, fields: ?Array<Field>, options: ?Object): () => void {
+
     return function reset() {
       _.each(fields, function(field) {
         if(typeof field === 'string') {
@@ -53,7 +54,13 @@ class Component {
         } else if(field.name){
           var defaultValue = typeof field.default === 'undefined' ? null : field.default;
 
-          instance[field.name] = defaultValue;
+          var configuredValue;
+          if(options) {
+            configuredValue = options[field.name];
+          }
+
+          instance[field.name] = configuredValue ? configuredValue : defaultValue;
+          debug(instance[field.name])
         } else {
           debug('bad field');
         }

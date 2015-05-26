@@ -11,7 +11,8 @@ exports.Position = new Component('position', [{
   name: 'x',
   default: 0
 }, {
-  name: 'y', default: 0
+  name: 'y',
+  default: 0
 }]);
 
 exports.Collision = new Component('collision', [{
@@ -19,7 +20,19 @@ exports.Collision = new Component('collision', [{
     default: false
 }]);
 
-exports.Velocity = new Component('velocity', ['Vx', 'Vy']);
-exports.Visible = new Component('visible', ['character', 'foreground']);
+
+exports.Visible = new Component('visible', [{
+  name: 'character',
+  default: 0
+}, {
+  name: 'foreground',
+  default: 'white'
+}]);
+
 exports.Controllable = new Component('controllable', _.values(keymap));
-exports.Weapon = new Component('weapon', ['firing']);
+exports.Weapon = new Component('weapon', [{
+  name: 'firing',
+  default: false
+}]);
+
+exports.Velocity = new Component('velocity', ['Vx', 'Vy']);

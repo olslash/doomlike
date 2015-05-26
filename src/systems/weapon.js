@@ -4,6 +4,7 @@
 var _     = require('lodash');
 var keypress = require('keypress');
 
+var debug = require('../lib/debug');
 var engine = require('../engine');
 var System = engine.System;
 var components = require('../components');
@@ -11,6 +12,7 @@ var components = require('../components');
 module.exports = new System('weapon', ['weapon', 'position'], function(entities) {
   _.each(entities, function(entity) {
     if(entity.weapon.firing) { // set by system-controllable
+      debug('adding a bullet')
       // make an entity to represent a bullet
       // attach collision and position and velocity components
       var bullet: engine.Entity = new engine.Entity();
@@ -30,6 +32,13 @@ module.exports = new System('weapon', ['weapon', 'position'], function(entities)
         vX: 5,
         vY: 5 // todo: base on player velocity?
       }), bullet);
+
+      engine.attachComponentToEntity(components.Visible.getInstance({
+        character: 'o',
+        foreground: 'blue'
+      }), bullet);
+
+      entity.weapon.firing = false;
     }
   });
 });

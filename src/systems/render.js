@@ -4,6 +4,7 @@
 var _     = require('lodash');
 var charm = require('charm')();
 
+var debug = require('../lib/debug');
 var System = require('../engine').System;
 
 type Pixel = {
@@ -53,6 +54,13 @@ module.exports = new System('render', ['visible', 'position'], function(entities
     _.each(row, function(pixel: Pixel, x) {
       // +1 because charm needs to be 1-indexed
       charm.position(Math.floor(x + 1), Math.floor(y + 1));
+
+      if(!pixel.foreground) {
+        // debug(x + ' ' + y)
+        // debug(JSON.stringify(pixel))
+        return
+      }
+
       charm.foreground(pixel.foreground);
       charm.write(pixel.character);
     });

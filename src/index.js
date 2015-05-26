@@ -5,7 +5,7 @@ var _     = require('lodash');
 var charm = require('charm')();
 
 var debug = require('./lib/debug');
-var raf = require('./lib/requestAnimationFrame');
+// var raf = require('./lib/requestAnimationFrame');
 var engine = require('./engine');
 var Entity = engine.Entity;
 
@@ -19,10 +19,11 @@ charm.reset();
 charm.cursor(false);
 
 var player: Entity = new Entity();
-var enemyPosition = components.Position.getInstance({
+var playerPosition = components.Position.getInstance({
   x: 2,
   y: 2
 });
+
 
 
 var visible = components.Visible.getInstance({
@@ -30,14 +31,14 @@ var visible = components.Visible.getInstance({
   foreground: 'red'
 });
 
-var weapon = components.Weapon.getInstance({});
+var weapon = components.Weapon.getInstance();
 
 
-engine.attachComponentToEntity(enemyPosition, player);
+engine.attachComponentToEntity(playerPosition, player);
 engine.attachComponentToEntity(visible, player);
 engine.attachComponentToEntity(weapon, player);
 engine.attachComponentToEntity(components.Controllable.getInstance(), player);
-
+debug('player: ' + JSON.stringify(player))
 
 var fps = 0;
 // clear()
@@ -46,7 +47,7 @@ function gameLoop() {
   // todo: bookkeeping of systems-- automatically tick all of them
   controllableSystem.tick();
   weaponSystem.tick();
-  // renderSystem.tick();
+  renderSystem.tick();
   setImmediate(gameLoop)
   // raf.requestAnimationFrame(gameLoop)
 }
