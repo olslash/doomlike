@@ -4,7 +4,9 @@
 var _ = require('lodash');
 
 var debug = require('./lib/debug');
-var _entities = {};
+var messageBus = require('./messageBus');
+
+var _entities = {}; // global record of all entities
 
 class Entity {
   id: string;
@@ -65,29 +67,6 @@ class Component {
   // }
 }
 
-// class _ComponentInstance {
-//   options: Object;
-//   type: string;
-//   entityId: ?string;
-//
-//   constructor(options: ?Object = null) {
-//
-//     if(options) {
-//
-//       this.options = options;
-//       _.assign(this, options);
-//     }
-//   }
-//
-//   reset() {
-//     _.each(this.options, function(option) {
-//       this[option] = null;
-//     });
-//   }
-//
-// }
-
-
 function attachComponentToEntity(component: Object, entity: string|Entity) {
   if(typeof entity === 'string') {
     component.entityId = entity;
@@ -96,25 +75,32 @@ function attachComponentToEntity(component: Object, entity: string|Entity) {
   }
 
   _.set(_entities[component.entityId], component.type, component);
+
+  // broadcast that we've attached a component to an entity-- for the systems to update their caches
+  messageBus.emit('component:attached', component.type);
 }
 
 class System {
   type              : string;
   requiredComponents: Array<string>;
   onTick            : (e: Array<Object>) => void;
+  entities          : Array<Entity>;
 
   constructor(type: string, requiredComponents: Array<string>,
     onTick: (e: Array<Entity>) => void) {
-
     this.requiredComponents = requiredComponents;
     this.onTick = onTick;
+    this.type = type;
+
+    messageBus.on('component:attached', function(componentType: string) {
+      if(_.includes(this.requiredComponents, componentType )) {
+        this._updateCache();
+      }
+    }.bind(this))
   }
 
-  tick() {
-    // fixme: cache this and just update when new relevant components are added
-    // should also maybe not touch irrelevant components.
-    var relevantEntities = _(_entities)
-
+  _updateCache() {
+    this.entities = _(_entities)
       .keys()
 
       .filter(function(entityId) {
@@ -130,9 +116,10 @@ class System {
       })
 
       .value();
+  }
 
-
-    this.onTick(relevantEntities);
+  tick() {
+    this.onTick(this.entities);
   }
 }
 
