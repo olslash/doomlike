@@ -11,7 +11,10 @@ var components = require('../components');
 
 module.exports = new System('weapon', ['weapon', 'position'], function(entities) {
   _.each(entities, function(entity) {
-    if(entity.weapon.firing) { // set by system-controllable
+    // if(entity.controllable.fire) {
+    //   debug('fire')
+    // }
+    if(entity.controllable.fire) { // set by system-controllable
       debug('adding a bullet')
       // make an entity to represent a bullet
       // attach collision and position and velocity components
@@ -29,8 +32,8 @@ module.exports = new System('weapon', ['weapon', 'position'], function(entities)
       }), bullet); // fixme-- should just default to false
 
       engine.attachComponentToEntity(components.Velocity.getInstance({
-        vX: 5,
-        vY: 5 // todo: base on player velocity?
+        Vx: 1,
+        Vy: 1 // todo: base on player velocity?
       }), bullet);
 
       engine.attachComponentToEntity(components.Visible.getInstance({

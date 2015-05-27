@@ -41,7 +41,7 @@ engine.attachComponentToEntity(visible, player);
 engine.attachComponentToEntity(weapon, player);
 engine.attachComponentToEntity(components.Controllable.getInstance(), player);
 engine.attachComponentToEntity(components.Velocity.getInstance(), player);
-debug('player: ' + JSON.stringify(player))
+// debug('player: ' + JSON.stringify(player))
 
 var fps = 0;
 // clear()
