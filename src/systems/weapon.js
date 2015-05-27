@@ -23,8 +23,8 @@ module.exports = new System('weapon', ['weapon', 'position'], function(entities)
       engine.attachComponentToEntity(components.Position.getInstance({
         // bullet starts at player position
         // todo: offset this based on velocity-- shouldn't spawn right on player
-        x: entity.position.x + 1,
-        y: entity.position.y + 1
+        x: entity.position.x,
+        y: entity.position.y
       }), bullet);
 
       engine.attachComponentToEntity(components.Collision.getInstance({
@@ -32,8 +32,8 @@ module.exports = new System('weapon', ['weapon', 'position'], function(entities)
       }), bullet); // fixme-- should just default to false
 
       engine.attachComponentToEntity(components.Velocity.getInstance({
-        Vx: 1,
-        Vy: 1 // todo: base on player velocity?
+        Vx: entity.velocity.Vx * 2.5,
+        Vy: entity.velocity.Vy * 2.5// todo: base on player velocity?
       }), bullet);
 
       engine.attachComponentToEntity(components.Visible.getInstance({
