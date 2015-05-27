@@ -8,44 +8,15 @@ var System = require('../engine').System;
 var debug = require('../lib/debug');
 var keymap = require('../config/keymap').bindings;
 
-var MOVE_SPEED = 100;
 
 var activeKeys = {};
-module.exports = new System('controllable', ['position', 'controllable'], function(entities) {
+module.exports = new System('controllable', ['position', 'controllable', 'velocity'], function(entities) {
   // look at activekeys and set flags on the entities
   _.each(entities, function(entity) {
     entity.controllable.reset();
 
     for(var key in activeKeys) {
       entity.controllable[key] = true
-    }
-  });
-
-  var moveDist = MOVE_SPEED / 100;
-
-  _.each(entities, function(entity) {
-    if(entity.controllable.forward) {
-      debug('forward');
-    }
-
-    if(entity.controllable.back) {
-      debug('back');
-    }
-
-    if(entity.controllable.left) {
-      debug('left');
-    }
-
-    if(entity.controllable.right) {
-      debug('right');
-    }
-
-    if(entity.controllable.fire) {
-
-      if(entity.weapon) {
-        debug('fire');
-        entity.weapon.firing = true;
-      }
     }
   });
 

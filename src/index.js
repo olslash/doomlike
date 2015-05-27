@@ -10,6 +10,8 @@ var engine = require('./engine');
 var Entity = engine.Entity;
 
 var renderSystem = require('./systems/render');
+var physicsSystem = require('./systems/physics');
+var playerMovementSystem = require('./systems/playerMovement');
 var controllableSystem = require('./systems/controllable');
 var weaponSystem = require('./systems/weapon');
 var components = require('./components');
@@ -38,6 +40,7 @@ engine.attachComponentToEntity(playerPosition, player);
 engine.attachComponentToEntity(visible, player);
 engine.attachComponentToEntity(weapon, player);
 engine.attachComponentToEntity(components.Controllable.getInstance(), player);
+engine.attachComponentToEntity(components.Velocity.getInstance(), player);
 debug('player: ' + JSON.stringify(player))
 
 var fps = 0;
@@ -47,6 +50,8 @@ function gameLoop() {
   // todo: bookkeeping of systems-- automatically tick all of them
   controllableSystem.tick();
   weaponSystem.tick();
+  playerMovementSystem.tick();
+  physicsSystem.tick();
   renderSystem.tick();
   setImmediate(gameLoop)
   // raf.requestAnimationFrame(gameLoop)

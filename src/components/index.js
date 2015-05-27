@@ -35,4 +35,10 @@ exports.Weapon = new Component('weapon', [{
   default: false
 }]);
 
-exports.Velocity = new Component('velocity', ['Vx', 'Vy']);
+exports.Velocity = new Component('velocity', [{
+  name: 'Vx',
+  default: 0
+}, {
+  name: 'Vy',
+  default: 0
+}]);
